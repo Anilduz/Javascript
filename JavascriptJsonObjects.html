@@ -1,0 +1,322 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+
+<style>
+    table, th, td {
+  border: 1px solid;
+}
+</style>
+</head>
+<body>
+
+
+    <div class="container">
+      
+        <div class="row">
+            <button class="btn-info col-4" onclick="GenderAvarage()">Hangi Cinsiyet diğerinden kaç fazla?</button>
+            <button class="btn-danger col-4" onclick="BigTwentyMale()">20 Yaşından büyük kaç erkek var?</button>
+            <button class="btn-info col-4" onclick="BigTwentyFemale()">20 Yaşından büyük kaç kadın var?</button>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <button class="btn-info col-4" onclick="WomenYearAvarage()">Kadın Yaş Ortalaması</button>
+            <button class="btn-danger col-4" onclick="MenYearAvarage()">Erkek Yaş Ortalaması</button>
+            <button class="btn-info col-4" onclick="GetList()">Listeyi Getir</button>
+        </div>
+
+        </br> 
+
+        <div class="row">
+            <button class="btn-danger col-12" onclick="AddPerson()"> Form Getir </button>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <table class="col-12 table table-dark table-hover" id="JSONOutput"></table>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-6" id="textBoxPlace"></div>
+            <h1 class="col-6" id="ArrayCiktisiUzunluk"></h1>
+    
+        </div>
+    
+    </div>
+    <script>//boş bir div oluştur, dive buton koy, butona tıkladığımızda divin altına textbox ve buton koyacak. textbox'ın sağındaki butona tıklayınca, o textbox içerisindeki değeri alıp bir arraye atacak.
+        //arraya attıktan sonra da sayfanın sağına tüm elemanları atması için bir buton daha eklenecek.
+    
+    
+        var personJSON = [];
+        let strObj;
+        function AddPerson() {
+            let val;
+            let list = document.getElementById("textBoxPlace");
+    
+            const input_name = document.createElement("input");
+            input_name.type = "text";
+            input_name.className = "col-6";
+            input_name.id = "name";
+            input_name.placeholder = "İsminizi giriniz";
+            list.appendChild(input_name);
+    
+            const input_surname = document.createElement("input");
+            input_surname.type = "text";
+            input_surname.className = "col-6";
+            input_surname.id = "surname";
+            input_surname.placeholder = "Soyisminizi giriniz";
+            list.appendChild(input_surname);
+    
+            const input_age = document.createElement("input");
+            input_age.type = "text";
+            input_age.className = "col-6";
+            input_age.id = "age";
+            input_age.placeholder = "Yaşınızı giriniz";
+            list.appendChild(input_age);
+    
+            const input_gender = document.createElement("input");
+            input_gender.type = "text";
+            input_gender.className = "col-6";
+            input_gender.id = "gender";
+            input_gender.placeholder = "Cinsiyetinizi giriniz";
+            list.appendChild(input_gender);
+    
+            const button = document.createElement("button");
+            button.textContent = "Ekle";
+            button.id = "Ekle"
+            button.className = "col-6";
+    
+            button.onclick = function ()
+            {
+    
+                var val = list.childNodes;
+                var Name, Surname, Age, Gender;
+                for (let i = 0; i < val.length; i++) {
+                    if (i == 0) {
+                        Name = val[0].value;
+                    }
+                    if (i == 1) {
+                        Surname = val[1].value;
+                    }
+                    if (i == 2) {
+                        Age = val[2].value;
+                    }
+                    
+                    if (i == 3) {
+                        Gender = val[3].value;
+                    }
+    
+                }
+                
+                document.getElementById("textBoxPlace").innerHTML = "";
+    
+    
+                if (Name != '' && Surname != '' && Age != '' && (Gender == 'erkek' || (Gender == 'kadın'))) {
+                    strObj = { "Name": Name, "Surname": Surname, "Age": Age, "Gender": Gender };
+                    personJSON.push(strObj);
+                    console.log(personJSON);
+                    alert("kayıt başarıyla oluşturuldu");
+                }
+                else {
+                    alert("lütfen verilerin tamamını doldurunuz");
+                    return;
+                }
+    
+                var output = document.getElementById("textBoxPlace").innerHTML = "";
+                
+                
+    
+                /*
+                for (let a = 0; a < degerler.length; a++) {
+                    document.getElementById("ArrayCiktisi").innerHTML += a + ". eleman: " + " " + degerler[a] + "</br>";
+                }
+                document.getElementById("ArrayCiktisiUzunluk").innerHTML = "Array uzunluğu: " + degerler.length;
+                */
+                GetList();
+            }
+            list.appendChild(button);
+    
+            var br = document.createElement('br');
+            var br2 = document.createElement('br');
+    
+            list.appendChild(br);
+            list.appendChild(br2);
+    
+    
+    
+        }
+        let kadinSayisi= 0;
+        let kadinYasToplam = 0;
+        let womanYearAvarage = 0;
+        let yas = 0;
+        function WomenYearAvarage() 
+        {
+        
+            if (personJSON.length > 0) {
+                for (let i = 0; i < personJSON.length; i++) {
+    
+                    if (personJSON[i].Gender == 'kadın') {
+                        kadinSayisi++;
+                        yas = parseInt(personJSON[i].Age);
+                    }
+                    kadinYasToplam += yas;
+                    womanYearAvarage = kadinYasToplam / kadinSayisi;
+    
+                }
+    
+                alert("Kadınların yaş ortalaması : " + womanYearAvarage + " Kadın Sayısı : " + kadinSayisi);
+    
+            }
+            else 
+            {
+                alert("lütfen kişi doğru girdiğinize emin olun");
+            }
+    
+        }
+        
+        let erkekSayisi = 0;
+        let erkekYasToplam = 0;
+        let menYearAvarage = 0;
+        let yasErkek = 0;
+        function MenYearAvarage() 
+        {
+        
+            if (personJSON.length > 0) {
+                for (let i = 0; i < personJSON.length; i++) {
+    
+                    if (personJSON[i].Gender == 'erkek') {
+                        erkekSayisi++;
+                        yasErkek = parseInt(personJSON[i].Age);
+                        erkekYasToplam += yasErkek;
+
+                        
+                    }
+                    menYearAvarage = erkekYasToplam / erkekSayisi;
+    
+                }
+                alert("Erkek yaş ortalaması : " + menYearAvarage + " Erkek Sayısı : " + erkekSayisi);
+    
+            }
+            else 
+            {
+                alert("lütfen kişi doğru girdiğinize emin olun");
+            }
+    
+        }
+        
+
+        
+        function GenderAvarage() {
+          
+            var genderAvarages = 0;
+            var maleSum = 0;
+            var femaleSum = 0;
+
+            /*if (personJSON[i].Gender == 'kadın') {
+                        kadinSayisi++;
+                }*/
+            for(i = 0; i < personJSON.length; i++){
+                if(personJSON[i].Gender == 'kadın'){
+                    femaleSum++;
+                }
+                else{
+                    maleSum++;
+                }
+            }
+
+            
+            if (maleSum > femaleSum) {
+                genderAvarages = maleSum - femaleSum;
+                alert("erkek sayısı kadın sayısından " + genderAvarages + " fazladır.");
+            }
+            if (femaleSum > maleSum) {
+                genderAvarages = femaleSum - maleSum;
+                alert("kadın sayısı erkek sayısından " + genderAvarages + " fazladır.");
+            }
+            
+        }
+        
+        
+        function BigTwentyMale(){
+            var bigTwentyMale=0;
+            for(let i = 0; i < personJSON.length; i++){
+                if(personJSON[i].Gender == 'erkek' && personJSON[i].Age > 20){
+                    bigTwentyMale++;
+                    alert("yaşı 20'den büyük erkek sayısı: " +bigTwentyMale);
+                }
+            }
+        }
+        function BigTwentyFemale(){
+            var bigTwentyFemale=0;
+            for(let i = 0; i < personJSON.length; i++){
+                if(personJSON[i].Gender == 'kadın' && personJSON[i].Age > 20){
+                    bigTwentyFemale++;
+                    alert("yaşı 20'den büyük kadın sayısı: " +bigTwentyFemale);
+                }
+            }
+        }
+    
+    
+        function GetList() {
+            document.getElementById("JSONOutput").innerHTML = "<tr><th id ='ad'>Ad</th><th id ='soyad'>Soyad</th><th id ='yas'>Yaş</th><th id ='cinsiyet'>Cinsiyet</th></tr>";
+            // let tAd=document.createElement("td");
+            // let tSoyad=document.createElement("td");
+            // let tYas=document.createElement("td");
+            // let tCinsiyet=document.createElement("td");
+    
+            let name, surname, age, gender;
+    
+            for (i = 0; i < personJSON.length; i++) {
+                name = personJSON[i].Name;
+                surname = personJSON[i].Surname;
+                age = personJSON[i].Age;
+                gender = personJSON[i].Gender;
+    
+                document.getElementById("JSONOutput").innerHTML += "<tr>" + " <th> " + name + "</th>" + "<th>" + surname + "</th>" + "<th>" + age + "</th>" + "<th>" + gender + "</th>" + "</tr>"
+    
+                // tAd.textContent=name.value;
+                // tSoyad.textContent=surname.value;
+                // tYas.textContent=age.value;
+                // tCinsiyet.textContent=gender.value;
+    
+                // let tr=document.createElement("tr");
+    
+                // //tdleri tr içine ekliyorum
+                // tr.appendChild(tAd);
+                // tr.appendChild(tSoyad);
+                // tr.appendChild(tYas);
+                // tr.appendChild(tCinsiyet);
+    
+    
+            }
+            // JSONOutput.appendChild(tAd);
+            // JSONOutput.appendChild(tSoyad);
+            // JSONOutput.appendChild(tYas);
+            // JSONOutput.appendChild(tCinsiyet);
+    
+        }
+      
+        function arrayEkle() {
+            let val;
+            let list = document.querySelector('ul > li');
+            val = list.childNodes;
+            let secilmisbtn = document.getRootNode();
+            let secilmis = val.previousSibling;
+            alert(secilmis);
+        }</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+</body>
+</html>
