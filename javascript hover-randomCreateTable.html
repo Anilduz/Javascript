@@ -1,0 +1,405 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        crossorigin="anonymous">
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+
+        }
+
+        td,
+        th {
+            border: 1px solid black;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background-color: black;
+        }
+
+
+
+        .dot {
+            height: 485px;
+            width: 485px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Relevant progress bar CSS */
+        .bar {
+            background: #000;
+            width: 300px;
+            height: 10px;
+            border-radius: 3px;
+            margin: auto;
+            margin-bottom: 20px;
+        }
+
+        .progress {
+            width: 200px;
+            height: 10px;
+            border-radius: 5px;
+            background: #e03f97;
+            background: -webkit-linear-gradient(to right, #54f434, #f72804);
+            background: -o-linear-gradient(to right, #54f434, #f72804);
+            background: -moz-linear-gradient(to right, #54f434, #f72804);
+            background: -ms-linear-gradient(to right, #54f434, #f72804);
+            background: linear-gradient(to right, #54f434, #f72804);
+            -webkit-transition: 600ms cubic-bezier(0.6, 0, 0.38, 1);
+            -moz-transition: 600ms cubic-bezier(0.6, 0, 0.38, 1);
+            -o-transition: 600ms cubic-bezier(0.6, 0, 0.38, 1);
+            -ms-transition: 600ms cubic-bezier(0.6, 0, 0.38, 1);
+            transition: 600ms cubic-bezier(0.6, 0, 0.38, 1);
+        }
+
+
+        /* Pen Asthetics */
+
+
+        #barcontainer {
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0px;
+            width: 300px;
+            height: 200px;
+        }
+
+
+
+        button {
+            margin-top: 20px;
+            padding-bottom: 20px;
+            display: inline-block;
+            border: none;
+            background: #444;
+            padding: 15px;
+            color: #fff;
+            font-family: "Avenir Light";
+            font-size: 16px;
+            cursor: pointer;
+            -webkit-transition: 150ms linear;
+            -moz-transition: 150ms linear;
+            -o-transition: 150ms linear;
+            -ms-transition: 150ms linear;
+            transition: 150ms linear;
+        }
+
+        button:hover {
+            background: #555;
+            box-shadow: 0px 0px 40px #111;
+            -webkit-transition: 150ms linear;
+            -moz-transition: 150ms linear;
+            -o-transition: 150ms linear;
+            -ms-transition: 150ms linear;
+            transition: 150ms linear;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <!--<iframe id="home-map" width="100%" height="1000" frameborder="0" scrolling="no" allowfullscreen=""
+            src="https://www.arcgis.com/home/webscene/viewer.html?webscene=372e1a66306d483bbed9c93b6610a3b3&amp;viewpoint=cam:-73.95125297,-15.85916807,7816700.254;4.267,6.962&amp;ui=min"></iframe>
+        <br> -->
+        <div style="visibility: hidden; height: 1px; width: 1px;">
+            <!-- Button trigger modal -->
+            <div>
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Renk</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="modalBody">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row" style="padding-top: 200px;">
+                    <div class="col-5"></div>
+                    <div class="col-2 text-center"
+                        style="background-color: black; color: white; width: 300px; height: 100px;">
+                        <h1>Siteye Hoşgeldiniz</h1>
+                    </div>
+                    <div class="col-5"></div>
+                </div>
+                <br>
+                <div class="form-group" style="background-color: black; color: white;">
+                    <i class="fa-brands fa-youtube fa-2xl"></i>
+
+                    <label for="exampleInputUserName1">UserName</label>
+                    <input type="text" class="form-control" id="exampleInputUserName1" aria-describedby="userHelp"
+                        placeholder="Enter username">
+                </div>
+                <div class="form-group" style="background-color: black; color: white;">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Beni Hatirla</label>
+                </div>
+                <button type="submit" class="btn btn-primary" id="myBtn" onclick="Auth()">Submit</button>
+
+                <br><br><br>
+                <div class="toast" id="myToast">
+                    <div class="toast-header">
+                        <strong class="me-auto"><i class="bi-gift-fill"></i> Uyarı!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">
+                        Kullanıcı Adı veya şifre yanlış!
+                    </div>
+                </div>
+
+                <div class="toast" id="myToast2">
+                    <div class="toast-header">
+                        <strong class="me-auto"><i class="bi-gift-fill"></i> Başarılı!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">
+                        Kullanıcı Girişi başarılı!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-lg btn-danger" id="slideup">slide up</button>
+        <button type="button" class="btn btn-lg btn-info" id="showHide">Show/Hide</button>
+        <button type="button" class="btn btn-lg btn-dark" id="reDraw">Yenile</button> <br>
+        <br>
+
+        <span style="text-align: center;" class="row" id="tableAll">
+
+            <br>
+            <br>
+
+
+            <div class="row">
+                <div class="col-8">
+                    <table id="tableDiv" style="margin-left: 30px; width: 40%;">
+                    </table>
+                </div>
+                <div class="col-4">
+                    <div style="margin-left: 300px;">
+                        <div class="dot" id="square" style="background-color: white; "></div>
+                        <br>
+                        <h1 id="squareText" style="color: black; "></h1>
+                        <h1 id="squareId" style="color: black; "></h1>
+
+                        <br>
+                        <br>
+                        <label for="favcolor">Select your favorite color:</label>
+                        <input type="color" id="favcolor" name="favcolor" value="#ff0000"><br><br>
+
+                        <div id="barcontainer">
+                            <div id="r" class="bar">
+                                <div class="progress"></div>
+                            </div>
+                            <div id="g" class="bar">
+                                <div class="progress"></div>
+                            </div>
+                            <div id="b" class="bar">
+                                <div class="progress"></div>
+                            </div>
+
+                            <button onclick="resize()">Click me!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script>
+        function resize() {
+            var bar = document.getElementsByClassName("progress");
+            for (i = 0; i < bar.length; i++) {
+                bar[i].style.width = ((Math.random() * 280) + 20) + "px";
+            };
+        };
+
+        flag = true;
+        $("#showHide").on("click", function () {
+            if (flag) {
+                $("#tableAll").hide();
+                flag = false;
+            }
+            else {
+                $("#tableAll").show();
+                flag = true;
+            }
+            //$("#tableAll").slideUp(800).delay(800).fadeIn(900);
+            //$("#tableAll").slideUp(800).delay(800).fadeIn(900);
+            //$("td.second").slideUp(800).delay(800).fadeIn(900);
+        });
+        $("#slideup").on("click", function () {
+            /*if(flag){
+                $("#tableAll").hide();
+                flag = false;
+            }
+            else{
+                $("#tableAll").show();
+                flag = true;
+            }*/
+            $("#tableAll").slideUp(800).delay(800).fadeIn(900);
+            //$("#tableAll").slideUp(800).delay(800).fadeIn(900);
+            //$("td.second").slideUp(800).delay(800).fadeIn(900);
+        });
+        function Auth() {
+            debugger;
+            var username = document.getElementById("exampleInputUserName1").value;
+            var password = document.getElementById("exampleInputPassword1").value;
+            if (username == "aduz" && password == "12345") {
+                showToast(2);
+            }
+            else {
+                showToast(1);
+            }
+        }
+        function showToast(toastId) {
+
+            if (toastId == 1) {
+                $("#myToast").toast("show");
+            }
+            else {
+                $("#myToast2").toast("show");
+            }
+        }
+        // $("td").click(function () {
+        //     debugger;
+        //     if (locationElementCSS != undefined)
+        //         $("#modalBody").text(locationElementCSS);
+        //     $("#modalBody").append("<div style=\"width: 10px; height:10px\" id=\"modalBox\">test</div>");
+
+        //     //console.log(e.target);  // to get the element
+        //     //console.log(e.target.tagName);  // to get the element tag name alone
+        // });
+        $(".slide").css("border", "2px solid black");
+
+        $("#reDraw").on("click", function () {
+
+            document.getElementById("tableDiv").innerHTML = "";
+            draw();
+            $(function () {
+                $('[data-bs-toggle="tooltip"]').tooltip()
+            })
+
+        });
+        draw();
+        $(function () {
+            $('[data-bs-toggle="tooltip"]').tooltip()
+        })
+        function draw() {
+
+            var j = 1;
+            for (var i = 0; i < 50; i++) {
+                var row = "";
+                row += "<tr>";
+                for (var k = 0; k < 50; k++) {
+                    var id = "uid" + Math.random().toString(16).slice(2)
+                    var a = Math.ceil(Math.random() * 256);
+                    var b = Math.ceil(Math.random() * 256);
+                    var c = Math.ceil(Math.random() * 256);
+                    var abc = "(" + a + "," + b + "," + c + ")";
+
+                    row += "<td data-bs-toggle=\"tooltip\" data-bs-placement=\"bottom\"  data-bs-html=\"true\" title=\"<span>" + "RGB Değeri: " + abc + "</span>\" id=\"" + id + "\" class=\"slide\" style =\"" + "background-color:rgb" + abc + "\"" + ">" + j + "</td>";
+                    j++;
+                }
+                row += "</tr>";
+                document.getElementById("tableDiv").innerHTML += row;
+            }
+
+        }
+        var locationElementCSS;
+        window.onclick = e => {
+            if (e.target.style != undefined && e.target.id.includes("uid")) {
+                locationElementCSS = e.target.style.backgroundColor.toString();
+                debugger;
+                document.getElementById("square").style.backgroundColor = locationElementCSS;
+                document.getElementById("squareText").style.color = locationElementCSS;
+                document.getElementById("squareText").innerHTML = locationElementCSS;
+                document.getElementById("squareId").innerHTML = e.target.id;
+                document.getElementById("squareId").style.color = locationElementCSS;
+            }
+        };
+        function hexToRgb(hex) {
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            debugger;
+
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+        $("#favcolor").on("change", function () {
+            debugger;
+            if ($("#favcolor").val() != "") {
+                if ($("#" + document.getElementById("squareId").innerHTML) != "")
+                    var color = $("#favcolor").val();
+                document.getElementById(document.getElementById("squareId").innerHTML.toString()).style.backgroundColor = color;
+                document.getElementById("square").style.backgroundColor = color;
+                document.getElementById("squareText").style.color = color;
+                //document.getElementById("squareText").innerHTML = color;
+                document.getElementById("squareId").style.color = color;
+                var values = hexToRgb(color);
+                var rgb = "rgb(" + values.r + "," + values.g + "," + values.b + ")";
+                document.getElementById("squareText").innerHTML = rgb;
+
+
+            }
+        });
+        var color = $("#favcolor").val();
+        document.getElementById("square").style.backgroundColor = color;
+        document.getElementById("squareText").style.color = color;
+        var values = hexToRgb(color);
+        var rgb = "rgb(" + values.r + "," + values.g + "," + values.b + ")";
+        document.getElementById("squareText").innerHTML = rgb;
+        //document.getElementById("squareText").innerHTML = color;
+        // var locationElementCSS;
+        // window.onclick = e => {
+        //     if (e.target.style != undefined && e.target.id.includes("id")) {
+        //         locationElementCSS = e.target.style.backgroundColor.toString();
+        //         $("#modalBody").text(locationElementCSS.toString());
+        //         $("#modalBody").append("<div style=\"width: 300px; height:300px\" id=\"modalBox\"></div>");
+        //         $("#modalBox").css("background-color", locationElementCSS);
+        //     }
+        // };
+
+
+    </script>
+</body>
+
+</html>
